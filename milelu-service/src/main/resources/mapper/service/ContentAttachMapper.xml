@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.ContentAttachMapper">
+
+    <resultMap type="ContentAttach" id="ContentAttachResult">
+        <result property="id" column="id"/>
+        <result property="contentId" column="content_id"/>
+        <result property="fileUid" column="file_uid"/>
+        <result property="url" column="url"/>
+        <result property="name" column="name"/>
+        <result property="downs" column="downs"/>
+        <result property="sort" column="sort"/>
+        <result property="data" column="data"/>
+        <result property="createId" column="create_id"/>
+        <result property="modifiedId" column="modified_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectContentAttachVo">
+        select id,
+               content_id,
+               file_uid,
+               url,
+               name,
+               downs,
+               sort,
+               data,
+               create_id,
+               modified_id,
+               create_time,
+               update_time
+        from cms_content_attach
+    </sql>
+
+    <select id="selectContentAttachList" parameterType="ContentAttach" resultMap="ContentAttachResult">
+        <include refid="selectContentAttachVo"/>
+        <where>
+            <if test="contentId != null  and contentId != ''">and content_id = #{contentId}</if>
+            <if test="fileUid != null  and fileUid != ''">and file_uid = #{fileUid}</if>
+            <if test="url != null  and url != ''">and url = #{url}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="downs != null ">and downs = #{downs}</if>
+            <if test="sort != null ">and sort = #{sort}</if>
+            <if test="data != null  and data != ''">and data = #{data}</if>
+            <if test="createId != null  and createId != ''">and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''">and modified_id = #{modifiedId}</if>
+            <if test="createTime != null ">and create_time = #{createTime}</if>
+            <if test="updateTime != null ">and update_time = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectContentAttachById" parameterType="String" resultMap="ContentAttachResult">
+        <include refid="selectContentAttachVo"/>
+        where id = #{id}
+    </select>
+    <select id="listData" resultType="java.lang.String">
+        SELECT `data`
+        FROM cms_content_attach
+        WHERE content_id = #{contentId}
+    </select>
+    <select id="listAttachs" resultType="java.util.Map">
+        SELECT url ,file_uid AS uid, file_uid AS fileUid,`name` , 'done' AS status,content_id AS contentId FROM
+        cms_content_attach
+        WHERE content_id IN
+        <foreach collection="contentIds" item="contentId" open="(" close=")" separator=",">#{contentId}</foreach>
+    </select>
+    <select id="listAttach" resultType="java.util.Map">
+         SELECT url ,file_uid AS uid, file_uid AS fileUid,`name` , 'done' AS status FROM cms_content_attach
+       WHERE content_id = ${contentId}
+    </select>
+
+    <insert id="insertContentAttach" parameterType="ContentAttach">
+        insert into cms_content_attach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="contentId != null and contentId != ''">content_id,</if>
+            <if test="fileUid != null and fileUid != ''">file_uid,</if>
+            <if test="url != null">url,</if>
+            <if test="name != null">name,</if>
+            <if test="downs != null">downs,</if>
+            <if test="sort != null">sort,</if>
+            <if test="data != null">data,</if>
+            <if test="createId != null and createId != ''">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="contentId != null and contentId != ''">#{contentId},</if>
+            <if test="fileUid != null and fileUid != ''">#{fileUid},</if>
+            <if test="url != null">#{url},</if>
+            <if test="name != null">#{name},</if>
+            <if test="downs != null">#{downs},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="data != null">#{data},</if>
+            <if test="createId != null and createId != ''">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateContentAttach" parameterType="ContentAttach">
+        update cms_content_attach
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contentId != null and contentId != ''">content_id = #{contentId},</if>
+            <if test="fileUid != null and fileUid != ''">file_uid = #{fileUid},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="downs != null">downs = #{downs},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="createId != null and createId != ''">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteContentAttachById" parameterType="String">
+        delete
+        from cms_content_attach
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteContentAttachByIds" parameterType="String">
+        delete from cms_content_attach where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByFiled">
+        delete
+        from cms_content_attach
+        where ${field} = #{val}
+    </delete>
+
+</mapper>

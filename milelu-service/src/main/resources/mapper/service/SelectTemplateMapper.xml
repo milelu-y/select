@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.SelectTemplateMapper">
+    
+    <resultMap type="SelectTemplate" id="SelectTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="resourceId"    column="resource_id"    />
+        <result property="title"    column="title"    />
+        <result property="path"    column="path"    />
+        <result property="isCache"    column="is_cache"    />
+        <result property="type"    column="type"    />
+        <result property="picture"    column="picture"    />
+        <result property="price"    column="price"    />
+        <result property="description"    column="description"    />
+        <result property="reserve1"    column="reserve1"    />
+        <result property="reserve2"    column="reserve2"    />
+    </resultMap>
+
+    <sql id="selectSelectTemplateVo">
+        select id, category_id, resource_id, title, path, is_cache, type, picture, price, description, reserve1, reserve2 from select_template
+    </sql>
+
+    <select id="selectSelectTemplateList" parameterType="SelectTemplate" resultMap="SelectTemplateResult">
+        <include refid="selectSelectTemplateVo"/>
+        <where>  
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="resourceId != null "> and resource_id = #{resourceId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="isCache != null "> and is_cache = #{isCache}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="reserve1 != null  and reserve1 != ''"> and reserve1 = #{reserve1}</if>
+            <if test="reserve2 != null  and reserve2 != ''"> and reserve2 = #{reserve2}</if>
+        </where>
+    </select>
+    
+    <select id="selectSelectTemplateById" parameterType="Long" resultMap="SelectTemplateResult">
+        <include refid="selectSelectTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSelectTemplate" parameterType="SelectTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into select_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">category_id,</if>
+            <if test="resourceId != null">resource_id,</if>
+            <if test="title != null">title,</if>
+            <if test="path != null">path,</if>
+            <if test="isCache != null">is_cache,</if>
+            <if test="type != null">type,</if>
+            <if test="picture != null">picture,</if>
+            <if test="price != null">price,</if>
+            <if test="description != null">description,</if>
+            <if test="reserve1 != null">reserve1,</if>
+            <if test="reserve2 != null">reserve2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="resourceId != null">#{resourceId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="path != null">#{path},</if>
+            <if test="isCache != null">#{isCache},</if>
+            <if test="type != null">#{type},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="price != null">#{price},</if>
+            <if test="description != null">#{description},</if>
+            <if test="reserve1 != null">#{reserve1},</if>
+            <if test="reserve2 != null">#{reserve2},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSelectTemplate" parameterType="SelectTemplate">
+        update select_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="resourceId != null">resource_id = #{resourceId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="isCache != null">is_cache = #{isCache},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="reserve1 != null">reserve1 = #{reserve1},</if>
+            <if test="reserve2 != null">reserve2 = #{reserve2},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSelectTemplateById" parameterType="Long">
+        delete from select_template where id = #{id}
+    </delete>
+
+    <delete id="deleteSelectTemplateByIds" parameterType="String">
+        delete from select_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

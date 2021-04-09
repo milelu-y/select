@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.ContentAttributeMapper">
+
+    <resultMap type="ContentAttribute" id="ContentAttributeResult">
+        <result property="id" column="id"/>
+        <result property="contentId" column="content_id"/>
+        <result property="origin" column="origin"/>
+        <result property="originUrl" column="origin_url"/>
+        <result property="data" column="data"/>
+        <result property="text" column="text"/>
+        <result property="totalWordCount" column="total_word_count"/>
+        <result property="createId" column="create_id"/>
+        <result property="modifiedId" column="modified_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectContentAttributeVo">
+        select id,
+               content_id,
+               origin,
+               origin_url,
+               data,
+               text,
+               total_word_count,
+               create_id,
+               modified_id,
+               create_time,
+               update_time
+        from cms_content_attribute
+    </sql>
+
+    <select id="selectContentAttributeList" parameterType="ContentAttribute" resultMap="ContentAttributeResult">
+        <include refid="selectContentAttributeVo"/>
+        <where>
+            <if test="origin != null  and origin != ''">and origin = #{origin}</if>
+            <if test="originUrl != null  and originUrl != ''">and origin_url = #{originUrl}</if>
+            <if test="data != null  and data != ''">and data = #{data}</if>
+            <if test="text != null  and text != ''">and text = #{text}</if>
+            <if test="totalWordCount != null ">and total_word_count = #{totalWordCount}</if>
+            <if test="createId != null  and createId != ''">and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''">and modified_id = #{modifiedId}</if>
+            <if test="createTime != null ">and create_time = #{createTime}</if>
+            <if test="updateTime != null ">and update_time = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectContentAttributeById" parameterType="String" resultMap="ContentAttributeResult">
+        <include refid="selectContentAttributeVo"/>
+        where id = #{id}
+    </select>
+    <select id="getByField" resultType="com.milelu.service.domain.ContentAttribute">
+        <include refid="selectContentAttributeVo"/>
+        where ${field} = #{val}
+    </select>
+
+    <insert id="insertContentAttribute" parameterType="ContentAttribute">
+        insert into cms_content_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="contentId != null">content_id,</if>
+            <if test="origin != null">origin,</if>
+            <if test="originUrl != null">origin_url,</if>
+            <if test="data != null">data,</if>
+            <if test="text != null">text,</if>
+            <if test="totalWordCount != null">total_word_count,</if>
+            <if test="createId != null">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="contentId != null">#{contentId},</if>
+            <if test="origin != null">#{origin},</if>
+            <if test="originUrl != null">#{originUrl},</if>
+            <if test="data != null">#{data},</if>
+            <if test="text != null">#{text},</if>
+            <if test="totalWordCount != null">#{totalWordCount},</if>
+            <if test="createId != null">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateContentAttribute" parameterType="ContentAttribute">
+        update cms_content_attribute
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contentId != null">content_id = #{contentId},</if>
+            <if test="origin != null">origin = #{origin},</if>
+            <if test="originUrl != null">origin_url = #{originUrl},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="text != null">text = #{text},</if>
+            <if test="totalWordCount != null">total_word_count = #{totalWordCount},</if>
+            <if test="createId != null">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteContentAttributeById" parameterType="String">
+        delete
+        from cms_content_attribute
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteContentAttributeByIds" parameterType="String">
+        delete from cms_content_attribute where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByFiled">
+        delete
+        from cms_content_attribute
+        where ${field} = #{val}
+    </delete>
+
+</mapper>

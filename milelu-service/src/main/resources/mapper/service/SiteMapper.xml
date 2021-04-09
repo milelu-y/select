@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.SiteMapper">
+
+    <resultMap type="Site" id="SiteResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="name"    column="name"    />
+        <result property="siteTitle"    column="site_title"    />
+        <result property="siteKeywords"    column="site_keywords"    />
+        <result property="siteDesc"    column="site_desc"    />
+        <result property="siteLogo"    column="site_logo"    />
+        <result property="useStatic"    column="use_static"    />
+        <result property="sitePath"    column="site_path"    />
+        <result property="siteicp"    column="siteicp"    />
+        <result property="copyright"    column="copyright"    />
+        <result property="useSsi"    column="use_ssi"    />
+        <result property="dynamicPath"    column="dynamic_path"    />
+        <result property="disabled"    column="disabled"    />
+        <result property="commentCode"    column="comment_code"    />
+        <result property="shareCode"    column="share_code"    />
+        <result property="statisticalCode"    column="statistical_code"    />
+    </resultMap>
+
+    <sql id="selectSiteVo">
+        select id, parent_id, name, site_title, site_keywords, site_desc, site_logo, use_static, site_path, siteicp, copyright, use_ssi, dynamic_path, disabled, comment_code, share_code, statistical_code from sys_site
+    </sql>
+
+    <select id="selectSiteList" parameterType="Site" resultMap="SiteResult">
+        <include refid="selectSiteVo"/>
+        <where>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="siteTitle != null  and siteTitle != ''"> and site_title = #{siteTitle}</if>
+            <if test="siteKeywords != null  and siteKeywords != ''"> and site_keywords = #{siteKeywords}</if>
+            <if test="siteDesc != null  and siteDesc != ''"> and site_desc = #{siteDesc}</if>
+            <if test="siteLogo != null  and siteLogo != ''"> and site_logo = #{siteLogo}</if>
+            <if test="useStatic != null "> and use_static = #{useStatic}</if>
+            <if test="sitePath != null  and sitePath != ''"> and site_path = #{sitePath}</if>
+            <if test="siteicp != null  and siteicp != ''"> and siteicp = #{siteicp}</if>
+            <if test="copyright != null  and copyright != ''"> and copyright = #{copyright}</if>
+            <if test="useSsi != null "> and use_ssi = #{useSsi}</if>
+            <if test="dynamicPath != null  and dynamicPath != ''"> and dynamic_path = #{dynamicPath}</if>
+            <if test="disabled != null "> and disabled = #{disabled}</if>
+            <if test="commentCode != null  and commentCode != ''"> and comment_code = #{commentCode}</if>
+            <if test="shareCode != null  and shareCode != ''"> and share_code = #{shareCode}</if>
+            <if test="statisticalCode != null  and statisticalCode != ''"> and statistical_code = #{statisticalCode}</if>
+        </where>
+    </select>
+
+    <select id="selectSiteById" parameterType="Integer" resultMap="SiteResult">
+        <include refid="selectSiteVo"/>
+        where id = #{id}
+    </select>
+    <select id="getSiteInfo" resultType="java.util.Map">
+        <include refid="selectSiteVo"/>
+    </select>
+
+    <insert id="insertSite" parameterType="Site" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_site
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="siteTitle != null">site_title,</if>
+            <if test="siteKeywords != null">site_keywords,</if>
+            <if test="siteDesc != null">site_desc,</if>
+            <if test="siteLogo != null">site_logo,</if>
+            <if test="useStatic != null">use_static,</if>
+            <if test="sitePath != null and sitePath != ''">site_path,</if>
+            <if test="siteicp != null">siteicp,</if>
+            <if test="copyright != null">copyright,</if>
+            <if test="useSsi != null">use_ssi,</if>
+            <if test="dynamicPath != null and dynamicPath != ''">dynamic_path,</if>
+            <if test="disabled != null">disabled,</if>
+            <if test="commentCode != null">comment_code,</if>
+            <if test="shareCode != null">share_code,</if>
+            <if test="statisticalCode != null">statistical_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="siteTitle != null">#{siteTitle},</if>
+            <if test="siteKeywords != null">#{siteKeywords},</if>
+            <if test="siteDesc != null">#{siteDesc},</if>
+            <if test="siteLogo != null">#{siteLogo},</if>
+            <if test="useStatic != null">#{useStatic},</if>
+            <if test="sitePath != null and sitePath != ''">#{sitePath},</if>
+            <if test="siteicp != null">#{siteicp},</if>
+            <if test="copyright != null">#{copyright},</if>
+            <if test="useSsi != null">#{useSsi},</if>
+            <if test="dynamicPath != null and dynamicPath != ''">#{dynamicPath},</if>
+            <if test="disabled != null">#{disabled},</if>
+            <if test="commentCode != null">#{commentCode},</if>
+            <if test="shareCode != null">#{shareCode},</if>
+            <if test="statisticalCode != null">#{statisticalCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSite" parameterType="Site">
+        update sys_site
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="siteTitle != null">site_title = #{siteTitle},</if>
+            <if test="siteKeywords != null">site_keywords = #{siteKeywords},</if>
+            <if test="siteDesc != null">site_desc = #{siteDesc},</if>
+            <if test="siteLogo != null">site_logo = #{siteLogo},</if>
+            <if test="useStatic != null">use_static = #{useStatic},</if>
+            <if test="sitePath != null and sitePath != ''">site_path = #{sitePath},</if>
+            <if test="siteicp != null">siteicp = #{siteicp},</if>
+            <if test="copyright != null">copyright = #{copyright},</if>
+            <if test="useSsi != null">use_ssi = #{useSsi},</if>
+            <if test="dynamicPath != null and dynamicPath != ''">dynamic_path = #{dynamicPath},</if>
+            <if test="disabled != null">disabled = #{disabled},</if>
+            <if test="commentCode != null">comment_code = #{commentCode},</if>
+            <if test="shareCode != null">share_code = #{shareCode},</if>
+            <if test="statisticalCode != null">statistical_code = #{statisticalCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSiteById" parameterType="Integer">
+        delete from sys_site where id = #{id}
+    </delete>
+
+    <delete id="deleteSiteByIds" parameterType="String">
+        delete from sys_site where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

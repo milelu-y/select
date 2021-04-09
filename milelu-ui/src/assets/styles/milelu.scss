@@ -1,0 +1,465 @@
+/**
+* 通用css样式布局处理
+* Copyright (c) 2019 milelu
+*/
+
+/** 基础通用 **/
+.pt5 {
+  padding-top: 5px;
+}
+
+.pr5 {
+  padding-right: 5px;
+}
+
+.pb5 {
+  padding-bottom: 5px;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.mr5 {
+  margin-right: 5px;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mb8 {
+  margin-bottom: 8px;
+}
+
+.ml5 {
+  margin-left: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.ml0 {
+  margin-left: 10px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.m20 {
+  margin-left: 20px;
+}
+
+.el-dialog:not(.is-fullscreen) {
+  margin-top: 6vh !important;
+}
+/**解决表格线对不起**/
+.el-table th.gutter {
+  display: table-cell !important;
+}
+.el-table {
+  border-radius: 12px;
+  .el-table__header-wrapper, .el-table__fixed-header-wrapper {
+    th {
+      word-break: break-word;
+      background-color: #ffffff; /**#f8f8f9**/
+      color: #515a6e;
+      height: 40px;
+      font-size: 13px;
+    }
+  }
+
+  .el-table__body-wrapper {
+    .el-button [class*="el-icon-"] + span {
+      margin-left: 1px;
+    }
+  }
+}
+
+/* 鼠标滑过高亮显示 */
+.el-table tbody tr:hover > td {
+  background-color: rgb(189, 189, 189) !important
+}
+
+//修改表格的滚动条
+.el-table__body-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+//滚动条的滑块
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #a1a3a9;
+  border-radius: 3px;
+}
+/* 表格线 */
+.el-table--border, .el-table--group {
+  border-color: rgb(209, 206, 206);
+}
+
+.el-table--border:after, .el-table--group:after, .el-table:before {
+  background-color: rgb(209, 206, 206);
+}
+
+.el-table td, .el-table--border th, .el-table th.is-leaf {
+  border-bottom-color: rgb(209, 206, 206);
+}
+
+.el-table--border td, .el-table--border th {
+  border-right-color: rgb(209, 206, 206);
+}
+
+/*  斑马纹表格背景 */
+.el-table--striped .el-table__body tr.el-table__row--striped td {
+  background: rgb(228, 228, 228)
+}
+
+/* Dialog对话框 公共部分样式 Start*/
+/*蒙层部分*/
+.commonDialog {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 101;
+  overflow: hidden;
+}
+/*框体部分*/
+.commonDialog .content{
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 9px;
+  box-shadow: 2px 3px 5px #bbb;
+  overflow: hidden;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+  max-height: 90%;
+  width: 1000px;
+}
+/*head 部分*/
+.commonDialog .content .head{
+  height: 44px;
+  line-height: 44px;
+  background: #efefef;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+/*内容区部分*/
+.commonDialog .content .main{
+  width: 100%;
+  max-height: 70vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding:25px 20px;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  margin-bottom: 5px;
+}
+.el-dialog,.el-message-box {
+  border-radius: 9px;
+}
+.el-dialog__headerbtn,.el-message-box__headerbtn {
+  /* top: 5px !important;
+   right: 10px;*/
+  font-size: 18px;
+}
+.el-icon-close {
+  color: #666 !important;
+}
+.el-dialog__header,.el-message-box__header {
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  height: 44px;
+  background: #efefef;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.el-dialog__title,.el-message-box__title {
+  color: #666;
+  font-size: 12px !important;
+}
+.coverage-release .el-dialog__body {
+  padding: 20px;
+}
+/* Dialog对话框 公共部分样式 End*/
+
+
+/** 表单布局 **/
+.form-header {
+  font-size: 15px;
+  color: #6379bb;
+  border-bottom: 1px solid #ddd;
+  margin: 8px 10px 25px 10px;
+  padding-bottom: 5px
+}
+
+/** 表格布局 **/
+.pagination-container {
+  position: relative;
+  height: 25px;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  padding: 10px 20px !important;
+}
+
+/* tree border */
+.tree-border {
+  margin-top: 5px;
+  border: 1px solid #e5e6e7;
+  background: #FFFFFF none;
+  border-radius: 4px;
+}
+
+.pagination-container .el-pagination {
+  right: 0;
+  position: absolute;
+}
+
+.el-table .fixed-width .el-button--mini {
+  color: #409EFF;
+  padding-left: 0;
+  padding-right: 0;
+  width: inherit;
+}
+
+.el-tree-node__content > .el-checkbox {
+  margin-right: 8px;
+}
+
+.list-group-striped > .list-group-item {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.list-group {
+  padding-left: 0px;
+  list-style: none;
+}
+
+.list-group-item {
+  border-bottom: 1px solid #e7eaec;
+  border-top: 1px solid #e7eaec;
+  margin-bottom: -1px;
+  padding: 11px 0px;
+  font-size: 13px;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.el-card__header {
+  padding: 14px 15px 7px;
+  min-height: 40px;
+}
+
+.el-card__body {
+  padding: 15px 20px 20px 20px;
+}
+
+.card-box {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 10px;
+}
+
+/* button color */
+.el-button--cyan.is-active,
+.el-button--cyan:active {
+  background: #20B2AA;
+  border-color: #20B2AA;
+  color: #FFFFFF;
+}
+
+.el-button--cyan:focus,
+.el-button--cyan:hover {
+  background: #48D1CC;
+  border-color: #48D1CC;
+  color: #FFFFFF;
+}
+
+.el-button--cyan {
+  background-color: #20B2AA;
+  border-color: #20B2AA;
+  color: #FFFFFF;
+}
+
+/* text color */
+.text-navy {
+  color: #1ab394;
+}
+
+.text-primary {
+  color: inherit;
+}
+
+.text-success {
+  color: #1c84c6;
+}
+
+.text-info {
+  color: #23c6c8;
+}
+
+.text-warning {
+  color: #f8ac59;
+}
+
+.text-danger {
+  color: #ed5565;
+}
+
+.text-muted {
+  color: #888888;
+}
+
+/* image */
+.img-circle {
+  border-radius: 50%;
+}
+
+.img-lg {
+  width: 120px;
+  height: 120px;
+}
+
+.avatar-upload-preview {
+  position: absolute;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #ccc;
+  overflow: hidden;
+}
+
+/* 拖拽列样式 */
+.sortable-ghost {
+  opacity: .8;
+  color: #fff !important;
+  background: #42b983 !important;
+}
+
+.top-right-btn {
+  position: relative;
+  float: right;
+}
+
+.el-tree-node:focus > .el-tree-node__content {
+  background-color: #d9d9d9 !important;
+}
+
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background-color: #d9d9d9;
+}
+
+.el-tree-node__label {
+  width: auto;
+  margin-top: 12px;
+  float: right;
+  font-family: “Trebuchet MS”, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #000000;
+  line-height: 25px;
+  letter-spacing: 1px;
+}
+
+
+/**
+input禁用样式
+ */
+.el-input.is-disabled .el-input__inner {
+  background-color: #F5F7FA;
+  border-color: #ffffff;
+  color: #b4bccc;
+  cursor: not-allowed;
+}
+
+.el-drawer.rtl {
+  overflow: scroll;
+}
+
+.tox-tinymce-aux{
+  z-index: 5000 !important;
+}
+
+//::-webkit-scrollbar-track-piece {
+//  /* background-color: #2B2B2B; */
+//}
+
+//.el-scrollbar__wrap {
+//  overflow-x: hidden!important;
+//}
+
+//按钮边框 el-button--mini
+button.el-button.el-button--default.el-button--mini.is-disabled {
+  border: 1px solid #DCDFE6;
+}
+
+/**
+通知
+ */
+.el-notification {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 330px;
+  padding: 14px 26px 14px 13px;
+  border-radius: 8px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #FFFFFF;
+  position: fixed;
+  background-color: #FFFFFF;
+  -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  -webkit-transition: opacity .3s, left .3s, right .3s, top 0.4s, bottom .3s, -webkit-transform .3s;
+  transition: opacity .3s, left .3s, right .3s, top 0.4s, bottom .3s, -webkit-transform .3s;
+  transition: opacity .3s, transform .3s, left .3s, right .3s, top 0.4s, bottom .3s;
+  transition: opacity .3s, transform .3s, left .3s, right .3s, top 0.4s, bottom .3s, -webkit-transform .3s;
+  overflow: hidden;
+}

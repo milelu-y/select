@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.CategoryModelMapper">
+
+    <resultMap type="CategoryModel" id="CategoryModelResult">
+        <result property="id"    column="id"    />
+        <result property="siteId"    column="site_id"    />
+        <result property="categoryModelName"    column="category_model_name"    />
+        <result property="extendFieldList"    column="extend_field_list"    />
+        <result property="sort"    column="sort"    />
+        <result property="createId"    column="create_id"    />
+        <result property="modifiedId"    column="modified_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCategoryModelVo">
+        select id, site_id, category_model_name, extend_field_list, sort, create_id, modified_id, create_time, update_time from cms_category_model
+    </sql>
+
+    <select id="selectCategoryModelList" parameterType="CategoryModel" resultMap="CategoryModelResult">
+        <include refid="selectCategoryModelVo"/>
+        <where>
+            <if test="siteId != null  and siteId != ''"> and site_id = #{siteId}</if>
+            <if test="categoryModelName != null  and categoryModelName != ''"> and category_model_name like concat('%', #{categoryModelName}, '%')</if>
+            <if test="extendFieldList != null  and extendFieldList != ''"> and extend_field_list = #{extendFieldList}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="createId != null  and createId != ''"> and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''"> and modified_id = #{modifiedId}</if>
+        </where>
+    </select>
+
+    <select id="selectCategoryModelById" parameterType="String" resultMap="CategoryModelResult">
+        <include refid="selectCategoryModelVo"/>
+        where id = #{id}
+    </select>
+    <select id="getDesignField" resultType="java.lang.String">
+        SELECT extend_field_list FROM cms_category_model WHERE id = #{id}
+    </select>
+
+    <insert id="insertCategoryModel" parameterType="CategoryModel">
+        insert into cms_category_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="categoryModelName != null">category_model_name,</if>
+            <if test="extendFieldList != null">extend_field_list,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createId != null and createId != ''">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="categoryModelName != null">#{categoryModelName},</if>
+            <if test="extendFieldList != null">#{extendFieldList},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createId != null and createId != ''">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCategoryModel" parameterType="CategoryModel">
+        update cms_category_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="categoryModelName != null">category_model_name = #{categoryModelName},</if>
+            <if test="extendFieldList != null">extend_field_list = #{extendFieldList},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createId != null and createId != ''">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCategoryModelById" parameterType="String">
+        delete from cms_category_model where id = #{id}
+    </delete>
+
+    <delete id="deleteCategoryModelByIds" parameterType="String">
+        delete from cms_category_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByFiled">
+        delete from cms_category_model where category_id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.CategoryMapper">
+
+    <resultMap type="Category" id="CategoryResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="siteId" column="site_id"/>
+        <result property="code" column="code"/>
+        <result property="cover" column="cover"/>
+        <result property="pathRule" column="path_rule"/>
+        <result property="path" column="path"/>
+        <result property="onlyUrl" column="only_url"/>
+        <result property="remoteUrl" column="remote_url"/>
+        <result property="pageSize" column="page_size"/>
+        <result property="allowContribute" column="allow_contribute"/>
+        <result property="sort" column="sort"/>
+        <result property="hidden" column="hidden"/>
+        <result property="categoryModelId" column="category_model_id"/>
+        <result property="singlePage" column="single_page"/>
+        <result property="topPages" column="top_pages"/>
+        <result property="containChild" column="contain_child"/>
+        <result property="createId" column="create_id"/>
+        <result property="modifiedId" column="modified_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectCategoryVo">
+        select id,
+               name,
+               parent_id,
+               site_id,
+               code,
+               cover,
+               path_rule,
+               path,
+               only_url,
+               remote_url,
+               page_size,
+               allow_contribute,
+               sort,
+               hidden,
+               category_model_id,
+               single_page,
+               top_pages,
+               contain_child,
+               create_id,
+               modified_id,
+               create_time,
+               update_time
+        from cms_category
+    </sql>
+
+    <select id="selectCategoryList" parameterType="Category" resultMap="CategoryResult">
+        <include refid="selectCategoryVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="parentId != null  and parentId != ''">and parent_id = #{parentId}</if>
+            <if test="siteId != null  and siteId != ''">and site_id = #{siteId}</if>
+            <if test="code != null  and code != ''">and code = #{code}</if>
+            <if test="cover != null  and cover != ''">and cover = #{cover}</if>
+            <if test="pathRule != null  and pathRule != ''">and path_rule = #{pathRule}</if>
+            <if test="path != null  and path != ''">and path = #{path}</if>
+            <if test="onlyUrl != null ">and only_url = #{onlyUrl}</if>
+            <if test="remoteUrl != null  and remoteUrl != ''">and remote_url = #{remoteUrl}</if>
+            <if test="pageSize != null ">and page_size = #{pageSize}</if>
+            <if test="allowContribute != null ">and allow_contribute = #{allowContribute}</if>
+            <if test="sort != null ">and sort = #{sort}</if>
+            <if test="hidden != null ">and hidden = #{hidden}</if>
+            <if test="categoryModelId != null  and categoryModelId != ''">and category_model_id = #{categoryModelId}
+            </if>
+            <if test="singlePage != null ">and single_page = #{singlePage}</if>
+            <if test="topPages != null ">and top_pages = #{topPages}</if>
+            <if test="containChild != null ">and contain_child = #{containChild}</if>
+            <if test="createId != null  and createId != ''">and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''">and modified_id = #{modifiedId}</if>
+        </where>
+    </select>
+
+    <select id="selectCategoryById" parameterType="String" resultMap="CategoryResult">
+        <include refid="selectCategoryVo"/>
+        where id = #{id}
+    </select>
+    <select id="treeCategory" resultType="com.milelu.common.utils.model.Tree">
+        SELECT category.id,
+               category.id                        AS `key`,
+               category.`name`                    AS title,
+               category.`code`,
+               category.parent_id                 AS `parentId`,
+               IF(category.parent_id = '0', 1, 0) AS hasParent
+        FROM cms_category category
+        ORDER BY sort ASC
+    </select>
+    <select id="checkMaxCode" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM cms_category WHERE code =#{code}
+        <if test="id!=null and id !=''">
+            AND id!=#{id}
+        </if>
+    </select>
+
+    <select id="getDetail" resultType="com.milelu.service.domain.Category">
+        SELECT own.id                        id,
+               own.`name`,
+               own.code,
+               own.path,
+               own.cover,
+               own.path_rule                 pathRule,
+               own.remote_url                remoteUrl,
+               own.only_url                  onlyUrl,
+               own.contain_child             containChild,
+               own.single_page               singlePage,
+               own.page_size                 pageSize,
+               own.allow_contribute          allowContribute,
+               attr.title,
+               attr.keywords,
+               attr.description,
+               attr.`data`,
+               own.sort,
+               own.hidden,
+               own.category_model_id         categoryModelId,
+               own.create_time               createTime,
+               own.update_time               updateTime,
+               IFNULL(own.parent_id, '0') AS parentId,
+               own.top_pages              AS topPages,
+               IFNULL(parent.name, '父分类') AS parentName
+        FROM cms_category own
+                 LEFT JOIN cms_category parent ON parent.id = own.parent_id
+                 LEFT JOIN cms_category_attribute attr ON attr.category_id = own.id
+        WHERE own.id = #{id}
+    </select>
+    <select id="getCategoryTempPath" resultType="java.lang.String">
+        SELECT ct.template_path
+        FROM cms_category_template ct
+        WHERE ct.category_id = #{categoryId}
+    </select>
+    <select id="selectChildCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        from cms_category
+        where parent_id = #{parentId}
+    </select>
+    <select id="getMapDetail" resultType="java.util.Map">
+        SELECT own.id,own.`name`,own.code,own.path AS path,own.cover,own.path_rule AS pathRule,
+        own.only_url AS onlyUrl ,own.contain_child AS containChild,own.single_page AS singlePage,own.page_size AS
+        pageSize,
+        own.allow_contribute AS allowContribute,own.top_pages AS topPages,own.remote_url AS remoteUrl,
+        attr.title,attr.keywords,attr.description,attr.`data`,
+        own.sort,own.hidden,own.category_model_id AS categoryModelId,own.create_time as createTime ,own.update_time AS
+        updateTime,
+        IFNULL(own.parent_id,'0') AS parentId,
+        IFNULL(parent.name,'父分类') AS parentName
+        FROM cms_category own LEFT JOIN cms_category parent ON parent.id=own.parent_id
+        LEFT JOIN cms_category_attribute attr ON attr.category_id = own.id
+        <where>
+            <if test="id!=null">
+                own.id = #{id}
+            </if>
+            <if test="code!=null">
+                AND own.code = #{code}
+            </if>
+            <if test="siteId!=null">
+                AND own.site_id = #{siteId}
+            </if>
+        </where>
+    </select>
+    <select id="listCategoryByPid" resultType="com.milelu.service.domain.Category">
+        SELECT own.id,
+               own.`name`,
+               own.parent_id,
+               own.code,
+               own.path,
+               own.cover,
+               own.path_rule,
+               own.only_url,
+               own.contain_child,
+               own.single_page
+        FROM cms_category own
+        WHERE own.parent_id = #{categoryId}
+    </select>
+    <select id="treeCategoryForContent" resultType="com.milelu.service.domain.Category">
+        SELECT category.id,
+               category.id,
+               category.`name`,
+               category.`code`,
+               category.parent_id        parentId,
+               category.single_page      singlePage,
+               category.allow_contribute allowContribute
+        FROM cms_category category
+        ORDER BY sort DESC
+    </select>
+    <select id="getIds" resultType="java.lang.String">
+        SELECT id
+        FROM cms_category
+    </select>
+    <select id="navbar" resultType="com.milelu.service.domain.CategoryNavbar">
+        SELECT
+        category.id,
+        attr.title,
+        attr.keywords,
+        attr.description,
+        attr.data,
+        category.name,
+        category.parent_id parentId,
+        category.site_id siteId,
+        category.code,
+        category.path_rule pathRule,
+        category.path,
+        category.only_url onlyUrl,
+        category.remote_url remoteUrl,
+        category.page_size pageSize,
+        category.allow_contribute allowContribute,
+        category.sort,
+        category.hidden,
+        category.category_model_id categoryModelId,
+        category.single_page singlePage,
+        category.top_pages topPages,
+        category.contain_child containChild
+        FROM cms_category category LEFT JOIN cms_category_attribute attr ON attr.category_id = category.id
+        <if test="!showHideItem">
+            AND hidden = 0
+        </if>
+        ORDER BY sort ASC
+    </select>
+    <select id="countContent" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM cms_content content LEFT JOIN cms_category category ON content.category_id = category.id
+        <where>
+            <if test="categoryId!=null">
+                AND content.category_id = #{categoryId}
+            </if>
+            <if test="code!=null">
+                AND category.code =#{code}
+            </if>
+            AND `status` =1
+        </where>
+    </select>
+    <select id="getMapDetails" resultType="java.util.Map">
+        SELECT own.id,own.`name`,own.code,own.path AS path,own.cover,own.path_rule AS pathRule,
+        own.only_url AS onlyUrl ,own.contain_child AS containChild,own.single_page AS singlePage,own.page_size AS
+        pageSize,
+        own.allow_contribute AS allowContribute,own.top_pages AS topPages,own.remote_url AS remoteUrl,
+        attr.title,attr.keywords,attr.description,attr.`data`,
+        own.sort,own.hidden,own.category_model_id AS categoryModelId,own.create_time as createTime ,own.update_time AS
+        updateTime,
+        IFNULL(own.parent_id,'0') AS parentId,
+        IFNULL(parent.name,'父分类') AS parentName
+        FROM cms_category own LEFT JOIN cms_category parent ON parent.id=own.parent_id
+        LEFT JOIN cms_category_attribute attr ON attr.category_id = own.id
+        <where>
+            <if test="id!=null">
+                own.parent_id = #{id}
+            </if>
+        </where>
+        order by own.sort
+    </select>
+    <select id="selectCategoryListParent" resultType="com.milelu.service.domain.Category">
+        SELECT
+        own.id,own.`name`,
+        own.parent_id parentId,
+        own.code,
+        own.path,
+        own.cover,
+        own.only_url onlyUrl,
+        own.contain_child containChild,
+        own.page_size pageSize,
+        own.allow_contribute allowContribute,
+        own.sort,
+        own.hidden,
+        own.category_model_id categoryModelId,
+        own.create_time createTime ,
+        own.update_time
+        updateTime,IFNULL(parent.name,'父分类') as
+        parentName
+        FROM
+        cms_category own LEFT JOIN cms_category parent ON parent.id=own.parent_id
+        <where>
+            <if test="parentId!=null and parentId!=''">
+                own.parent_id = #{parentId}
+            </if>
+        </where>
+        ORDER BY own.sort ASC
+    </select>
+
+    <insert id="insertCategory" parameterType="Category">
+        insert into cms_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="siteId != null and siteId != ''">site_id,</if>
+            <if test="code != null and code != ''">code,</if>
+            <if test="cover != null">cover,</if>
+            <if test="pathRule != null">path_rule,</if>
+            <if test="path != null">path,</if>
+            <if test="onlyUrl != null">only_url,</if>
+            <if test="remoteUrl != null">remote_url,</if>
+            <if test="pageSize != null">page_size,</if>
+            <if test="allowContribute != null">allow_contribute,</if>
+            <if test="sort != null">sort,</if>
+            <if test="hidden != null">hidden,</if>
+            <if test="categoryModelId != null">category_model_id,</if>
+            <if test="singlePage != null">single_page,</if>
+            <if test="topPages != null">top_pages,</if>
+            <if test="containChild != null">contain_child,</if>
+            <if test="createId != null and createId != ''">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="siteId != null and siteId != ''">#{siteId},</if>
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="pathRule != null">#{pathRule},</if>
+            <if test="path != null">#{path},</if>
+            <if test="onlyUrl != null">#{onlyUrl},</if>
+            <if test="remoteUrl != null">#{remoteUrl},</if>
+            <if test="pageSize != null">#{pageSize},</if>
+            <if test="allowContribute != null">#{allowContribute},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="hidden != null">#{hidden},</if>
+            <if test="categoryModelId != null">#{categoryModelId},</if>
+            <if test="singlePage != null">#{singlePage},</if>
+            <if test="topPages != null">#{topPages},</if>
+            <if test="containChild != null">#{containChild},</if>
+            <if test="createId != null and createId != ''">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCategory" parameterType="Category">
+        update cms_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="siteId != null and siteId != ''">site_id = #{siteId},</if>
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="pathRule != null">path_rule = #{pathRule},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="onlyUrl != null">only_url = #{onlyUrl},</if>
+            <if test="remoteUrl != null">remote_url = #{remoteUrl},</if>
+            <if test="pageSize != null">page_size = #{pageSize},</if>
+            <if test="allowContribute != null">allow_contribute = #{allowContribute},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="hidden != null">hidden = #{hidden},</if>
+            <if test="categoryModelId != null">category_model_id = #{categoryModelId},</if>
+            <if test="singlePage != null">single_page = #{singlePage},</if>
+            <if test="topPages != null">top_pages = #{topPages},</if>
+            <if test="containChild != null">contain_child = #{containChild},</if>
+            <if test="createId != null and createId != ''">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCategoryById" parameterType="String">
+        delete
+        from cms_category
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCategoryByIds" parameterType="String">
+        delete from cms_category where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

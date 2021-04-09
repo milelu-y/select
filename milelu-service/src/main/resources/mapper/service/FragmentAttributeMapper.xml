@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.FragmentAttributeMapper">
+
+    <resultMap type="FragmentAttribute" id="FragmentAttributeResult">
+        <result property="id" column="id"/>
+        <result property="siteId" column="site_id"/>
+        <result property="cover" column="cover"/>
+        <result property="path" column="path"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="url" column="url"/>
+        <result property="sort" column="sort"/>
+        <result property="data" column="data"/>
+        <result property="templateId" column="template_id"/>
+        <result property="fragmentModelId" column="fragment_model_id"/>
+        <result property="activate" column="activate"/>
+        <result property="createId" column="create_id"/>
+        <result property="modifiedId" column="modified_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectFragmentAttributeVo">
+        select id,
+               site_id,
+               cover,
+               path,
+               title,
+               description,
+               url,
+               sort,
+               data,
+               template_id,
+               fragment_model_id,
+               activate,
+               create_id,
+               modified_id,
+               create_time,
+               update_time
+        from cms_fragment_attribute
+    </sql>
+
+    <select id="selectFragmentAttributeList" parameterType="FragmentAttribute" resultMap="FragmentAttributeResult">
+        <include refid="selectFragmentAttributeVo"/>
+        <where>
+            <if test="siteId != null  and siteId != ''">and site_id = #{siteId}</if>
+            <if test="cover != null  and cover != ''">and cover = #{cover}</if>
+            <if test="path != null  and path != ''">and path = #{path}</if>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="description != null  and description != ''">and description = #{description}</if>
+            <if test="url != null  and url != ''">and url = #{url}</if>
+            <if test="sort != null ">and sort = #{sort}</if>
+            <if test="data != null  and data != ''">and data = #{data}</if>
+            <if test="templateId != null  and templateId != ''">and template_id = #{templateId}</if>
+            <if test="fragmentModelId != null  and fragmentModelId != ''">and fragment_model_id = #{fragmentModelId}
+            </if>
+            <if test="activate != null ">and activate = #{activate}</if>
+            <if test="createId != null  and createId != ''">and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''">and modified_id = #{modifiedId}</if>
+            <if test="updateTime != null ">and update_time = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectFragmentAttributeById" parameterType="String" resultMap="FragmentAttributeResult">
+        <include refid="selectFragmentAttributeVo"/>
+        where id = #{id}
+    </select>
+    <select id="getListFragmentAttributeByModelId" resultType="com.milelu.service.domain.FragmentAttribute">
+        <include refid="selectFragmentAttributeVo"/>
+        where fragment_model_id=#{id}
+    </select>
+    <select id="listDataByCode" resultType="java.util.Map">
+        SELECT attr.id,
+               attr.cover,
+               attr.path,
+               attr.title,
+               attr.description,
+               attr.url,
+               attr.activate,
+               attr.create_time as createTime,
+               attr.data,
+               attr.sort
+        FROM cms_fragment_attribute attr
+                 INNER JOIN cms_fragment_model tfm ON tfm.id = attr.fragment_model_id
+        WHERE tfm.`code` = #{code}
+    </select>
+
+    <insert id="insertFragmentAttribute" parameterType="FragmentAttribute">
+        insert into cms_fragment_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="cover != null">cover,</if>
+            <if test="path != null">path,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="description != null">description,</if>
+            <if test="url != null">url,</if>
+            <if test="sort != null">sort,</if>
+            <if test="data != null">data,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="fragmentModelId != null">fragment_model_id,</if>
+            <if test="activate != null">activate,</if>
+            <if test="createId != null">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="path != null">#{path},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="description != null">#{description},</if>
+            <if test="url != null">#{url},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="data != null">#{data},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="fragmentModelId != null">#{fragmentModelId},</if>
+            <if test="activate != null">#{activate},</if>
+            <if test="createId != null">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFragmentAttribute" parameterType="FragmentAttribute">
+        update cms_fragment_attribute
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="fragmentModelId != null">fragment_model_id = #{fragmentModelId},</if>
+            <if test="activate != null">activate = #{activate},</if>
+            <if test="createId != null">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFragmentAttributeById" parameterType="String">
+        delete
+        from cms_fragment_attribute
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteFragmentAttributeByIds" parameterType="String">
+        delete from cms_fragment_attribute where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

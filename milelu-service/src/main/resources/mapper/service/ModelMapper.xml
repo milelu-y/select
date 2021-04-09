@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.ModelMapper">
+
+    <resultMap type="Model" id="ModelResult">
+        <result property="id" column="id"/>
+        <result property="siteId" column="site_id"/>
+        <result property="name" column="name"/>
+        <result property="hasImages" column="has_images"/>
+        <result property="hasFiles" column="has_files"/>
+        <result property="isUrl" column="is_url"/>
+        <result property="defaultFieldList" column="default_field_list"/>
+        <result property="extendFieldList" column="extend_field_list"/>
+        <result property="allFieldList" column="all_field_list"/>
+        <result property="requiredFieldList" column="required_field_list"/>
+        <result property="fieldTextMap" column="field_text_map"/>
+        <result property="createId" column="create_id"/>
+        <result property="modifiedId" column="modified_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectModelVo">
+        select id, site_id, name, has_images, has_files, is_url, default_field_list, extend_field_list, all_field_list, required_field_list, field_text_map, create_id, modified_id, create_time, update_time from cms_model
+    </sql>
+
+    <select id="selectModelList" parameterType="Model" resultMap="ModelResult">
+        <include refid="selectModelVo"/>
+        <where>
+            <if test="siteId != null  and siteId != ''">and site_id = #{siteId}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="hasImages != null ">and has_images = #{hasImages}</if>
+            <if test="hasFiles != null ">and has_files = #{hasFiles}</if>
+            <if test="isUrl != null ">and is_url = #{isUrl}</if>
+            <if test="defaultFieldList != null  and defaultFieldList != ''">and default_field_list =
+                #{defaultFieldList}
+            </if>
+            <if test="extendFieldList != null  and extendFieldList != ''">and extend_field_list = #{extendFieldList}
+            </if>
+            <if test="allFieldList != null  and allFieldList != ''">and all_field_list = #{allFieldList}</if>
+            <if test="requiredFieldList != null  and requiredFieldList != ''">and required_field_list =
+                #{requiredFieldList}
+            </if>
+            <if test="fieldTextMap != null  and fieldTextMap != ''">and field_text_map = #{fieldTextMap}</if>
+            <if test="createId != null  and createId != ''">and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''">and modified_id = #{modifiedId}</if>
+        </where>
+    </select>
+
+    <select id="selectModelById" parameterType="String" resultMap="ModelResult">
+        <include refid="selectModelVo"/>
+        where id = #{id}
+    </select>
+    <select id="listModelByCategoryId" resultType="com.milelu.service.domain.Model">
+            SELECT
+	model.id,
+	model.site_id,
+	model.name,
+IF
+	( mr.id IS NULL, 0, 1 ) AS `check`,
+IF
+	( mr.template_path IS NULL, mt.template_path, mr.template_path ) AS templatePath
+FROM
+	cms_model model
+	LEFT JOIN cms_category_model_relation mr ON mr.model_id = model.id
+	AND category_id = ${categoryId}
+	LEFT JOIN cms_model_template mt ON mt.model_id = model.id
+	AND mt.template_id
+    </select>
+    <select id="listPublishModel" resultType="com.milelu.common.utils.model.KeyValueModel">
+ SELECT model.id AS code,model.`name` AS `value` FROM cms_category_model_relation mr
+    INNER JOIN cms_model model ON model.id = mr.model_id
+    WHERE  mr.category_id =#{categoryId}
+    </select>
+
+    <insert id="insertModel" parameterType="Model">
+        insert into cms_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="hasImages != null">has_images,</if>
+            <if test="hasFiles != null">has_files,</if>
+            <if test="isUrl != null">is_url,</if>
+            <if test="defaultFieldList != null">default_field_list,</if>
+            <if test="extendFieldList != null">extend_field_list,</if>
+            <if test="allFieldList != null">all_field_list,</if>
+            <if test="requiredFieldList != null">required_field_list,</if>
+            <if test="fieldTextMap != null">field_text_map,</if>
+            <if test="createId != null">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="hasImages != null">#{hasImages},</if>
+            <if test="hasFiles != null">#{hasFiles},</if>
+            <if test="isUrl != null">#{isUrl},</if>
+            <if test="defaultFieldList != null">#{defaultFieldList},</if>
+            <if test="extendFieldList != null">#{extendFieldList},</if>
+            <if test="allFieldList != null">#{allFieldList},</if>
+            <if test="requiredFieldList != null">#{requiredFieldList},</if>
+            <if test="fieldTextMap != null">#{fieldTextMap},</if>
+            <if test="createId != null">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateModel" parameterType="Model">
+        update cms_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="hasImages != null">has_images = #{hasImages},</if>
+            <if test="hasFiles != null">has_files = #{hasFiles},</if>
+            <if test="isUrl != null">is_url = #{isUrl},</if>
+            <if test="defaultFieldList != null">default_field_list = #{defaultFieldList},</if>
+            <if test="extendFieldList != null">extend_field_list = #{extendFieldList},</if>
+            <if test="allFieldList != null">all_field_list = #{allFieldList},</if>
+            <if test="requiredFieldList != null">required_field_list = #{requiredFieldList},</if>
+            <if test="fieldTextMap != null">field_text_map = #{fieldTextMap},</if>
+            <if test="createId != null">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteModelById" parameterType="String">
+        delete from cms_model where id = #{id}
+    </delete>
+
+    <delete id="deleteModelByIds" parameterType="String">
+        delete from cms_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

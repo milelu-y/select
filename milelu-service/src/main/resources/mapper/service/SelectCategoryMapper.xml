@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.SelectCategoryMapper">
+    
+    <resultMap type="SelectCategory" id="SelectCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="reserve1"    column="reserve1"    />
+        <result property="reserve2"    column="reserve2"    />
+    </resultMap>
+
+    <sql id="selectSelectCategoryVo">
+        select id, name, reserve1, reserve2 from select_category
+    </sql>
+
+    <select id="selectSelectCategoryList" parameterType="SelectCategory" resultMap="SelectCategoryResult">
+        <include refid="selectSelectCategoryVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="reserve1 != null  and reserve1 != ''"> and reserve1 = #{reserve1}</if>
+            <if test="reserve2 != null  and reserve2 != ''"> and reserve2 = #{reserve2}</if>
+        </where>
+    </select>
+    
+    <select id="selectSelectCategoryById" parameterType="Long" resultMap="SelectCategoryResult">
+        <include refid="selectSelectCategoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSelectCategory" parameterType="SelectCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into select_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="reserve1 != null">reserve1,</if>
+            <if test="reserve2 != null">reserve2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="reserve1 != null">#{reserve1},</if>
+            <if test="reserve2 != null">#{reserve2},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSelectCategory" parameterType="SelectCategory">
+        update select_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="reserve1 != null">reserve1 = #{reserve1},</if>
+            <if test="reserve2 != null">reserve2 = #{reserve2},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSelectCategoryById" parameterType="Long">
+        delete from select_category where id = #{id}
+    </delete>
+
+    <delete id="deleteSelectCategoryByIds" parameterType="String">
+        delete from select_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

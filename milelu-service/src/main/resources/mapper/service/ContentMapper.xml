@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milelu.service.mapper.ContentMapper">
+
+    <resultMap type="Content" id="ContentResult">
+        <result property="id" column="id"/>
+        <result property="siteId" column="site_id"/>
+        <result property="title" column="title"/>
+        <result property="subTitle" column="sub_title"/>
+        <result property="approveUserId" column="approve_user_id"/>
+        <result property="approveUserName" column="approve_user_name"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="pCategoryId" column="p_category_id"/>
+        <result property="modelId" column="model_id"/>
+        <result property="copied" column="copied"/>
+        <result property="author" column="author"/>
+        <result property="editor" column="editor"/>
+        <result property="istop" column="istop"/>
+        <result property="isrecomd" column="isrecomd"/>
+        <result property="isheadline" column="isheadline"/>
+        <result property="onlyUrl" column="only_url"/>
+        <result property="hasFiles" column="has_files"/>
+        <result property="hasRelated" column="has_related"/>
+        <result property="hasTags" column="has_tags"/>
+        <result property="url" column="url"/>
+        <result property="description" column="description"/>
+        <result property="tagIds" column="tag_ids"/>
+        <result property="topTag" column="top_tag"/>
+        <result property="cover" column="cover"/>
+        <result property="comments" column="comments"/>
+        <result property="clicks" column="clicks"/>
+        <result property="pathRule" column="path_rule"/>
+        <result property="giveLikes" column="give_likes"/>
+        <result property="publishDate" column="publish_date"/>
+        <result property="publishUserId" column="publish_user_id"/>
+        <result property="jobDate" column="job_date"/>
+        <result property="approveDate" column="approve_date"/>
+        <result property="sort" column="sort"/>
+        <result property="status" column="status"/>
+        <result property="createId" column="create_id"/>
+        <result property="modifiedId" column="modified_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createName" column="create_name"/>
+        <result property="modifiedName" column="modified_name"/>
+    </resultMap>
+
+    <sql id="selectContentVo">
+        select id,
+               site_id,
+               title,
+               sub_title,
+               approve_user_id,
+               approve_user_name,
+               category_id,
+               p_category_id,
+               model_id,
+               copied,
+               author,
+               editor,
+               istop,
+               isrecomd,
+               isheadline,
+               only_url,
+               has_files,
+               has_related,
+               has_tags,
+               url,
+               description,
+               tag_ids,
+               top_tag,
+               cover,
+               comments,
+               clicks,
+               path_rule,
+               give_likes,
+               publish_date,
+               publish_user_id,
+               job_date,
+               approve_date,
+               sort,
+               status,
+               create_id,
+               modified_id,
+               create_time,
+               update_time,
+               create_name,
+               modified_name
+        from cms_content
+    </sql>
+
+    <select id="selectContentList" parameterType="Content" resultMap="ContentResult">
+        <include refid="selectContentVo"/>
+        <where>
+            <if test="siteId != null  and siteId != ''">and site_id = #{siteId}</if>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="subTitle != null  and subTitle != ''">and sub_title = #{subTitle}</if>
+            <if test="approveUserId != null  and approveUserId != ''">and approve_user_id = #{approveUserId}</if>
+            <if test="approveUserName != null  and approveUserName != ''">and approve_user_name like concat('%',
+                #{approveUserName}, '%')
+            </if>
+            <if test="categoryId != null  and categoryId != ''">and category_id = #{categoryId}</if>
+            <if test="pCategoryId != null  and pCategoryId != ''">and p_category_id = #{pCategoryId}</if>
+            <if test="modelId != null  and modelId != ''">and model_id = #{modelId}</if>
+            <if test="copied != null ">and copied = #{copied}</if>
+            <if test="author != null  and author != ''">and author = #{author}</if>
+            <if test="editor != null  and editor != ''">and editor = #{editor}</if>
+            <if test="istop != null ">and istop = #{istop}</if>
+            <if test="isrecomd != null ">and isrecomd = #{isrecomd}</if>
+            <if test="isheadline != null ">and isheadline = #{isheadline}</if>
+            <if test="onlyUrl != null ">and only_url = #{onlyUrl}</if>
+            <if test="hasFiles != null ">and has_files = #{hasFiles}</if>
+            <if test="hasRelated != null ">and has_related = #{hasRelated}</if>
+            <if test="hasTags != null ">and has_tags = #{hasTags}</if>
+            <if test="url != null  and url != ''">and url = #{url}</if>
+            <if test="description != null  and description != ''">and description = #{description}</if>
+            <if test="tagIds != null  and tagIds != ''">and tag_ids = #{tagIds}</if>
+            <if test="topTag != null  and topTag != ''">and top_tag = #{topTag}</if>
+            <if test="cover != null  and cover != ''">and cover = #{cover}</if>
+            <if test="comments != null ">and comments = #{comments}</if>
+            <if test="clicks != null ">and clicks = #{clicks}</if>
+            <if test="pathRule != null  and pathRule != ''">and path_rule = #{pathRule}</if>
+            <if test="giveLikes != null ">and give_likes = #{giveLikes}</if>
+            <if test="publishDate != null ">and publish_date = #{publishDate}</if>
+            <if test="publishUserId != null  and publishUserId != ''">and publish_user_id = #{publishUserId}</if>
+            <if test="jobDate != null ">and job_date = #{jobDate}</if>
+            <if test="approveDate != null ">and approve_date = #{approveDate}</if>
+            <if test="sort != null ">and sort = #{sort}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="createId != null  and createId != ''">and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''">and modified_id = #{modifiedId}</if>
+            <if test="createName != null  and createName != ''">and create_name like concat('%', #{createName}, '%')
+            </if>
+            <if test="modifiedName != null  and modifiedName != ''">and modified_name like concat('%', #{modifiedName},
+                '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectContentById" parameterType="String" resultMap="ContentResult">
+        <include refid="selectContentVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectContentLists" resultType="com.milelu.service.domain.Content">
+        SELECT
+        content.id,content.title,
+        content.sub_title subTitle,
+        content.copied,
+        content.author,
+        content.editor,
+        content.create_time createTime,
+        content.description,
+        content.cover AS coverStr,
+        content.sort,
+        content.status,
+        category.name AS categoryName,
+        content.category_id categoryId,
+        content.model_id modelId,
+        content.istop,
+        content.isrecomd,
+        content.isheadline,
+        top_tag topTag,
+        model.name AS modelName,
+        content.publish_date publishDate,
+        content.job_date jobDate
+        FROM cms_content content
+        LEFT JOIN cms_category category ON content.category_id = category.id
+        LEFT JOIN cms_model model ON model.id = content.model_id
+        <where>
+            <if test="dto.categoryIds!=null and dto.categoryIds.size()>0">
+                content.category_id IN
+                <foreach collection="dto.categoryIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="dto.title!=null">
+                AND content.title LIKE CONCAT('%',#{dto.title},'%')
+            </if>
+
+            <if test="dto.status!=null">
+                AND content.status = #{dto.status}
+            </if>
+            AND content.status != '2'
+        </where>
+    </select>
+    <select id="getPathRule" resultType="java.lang.String">
+        SELECT path_rule
+        FROM cms_content
+        WHERE id = #{id}
+    </select>
+    <select id="loadTempParams" resultType="java.util.Map">
+        SELECT content.id,content.title,content.sub_title AS subTitle ,content.author,content.clicks,content.copied,
+        content.cover,content.description,content.editor,content.create_time AS createTime,content.url,
+        attr.text,attr.`data`,
+        attr.origin,attr.origin_url AS originUrl , content.top_tag AS topTag,
+        GROUP_CONCAT(tag.`name`) AS tagName,content.publish_date AS publishDate,content.path_rule AS pathRule,
+        content.isheadline,content.isrecomd,content.istop,
+        category.`id` AS categoryId,category.`code` AS categoryCode,category.`code` AS code,category.path AS
+        categoryPath,
+        category.`name` AS categoryName
+        FROM cms_content content
+        LEFT JOIN cms_tag tag ON FIND_IN_SET(tag.id,content.tag_ids)
+        LEFT JOIN cms_category category ON category.id = content.category_id
+        LEFT JOIN cms_content_attribute attr ON attr.content_id = content.id
+        WHERE content.id = #{contentId}
+        <if test="statues.size() > 0">
+            AND content.status IN
+            <foreach collection="statues" item="status" open="(" separator="," close=")">#{status}</foreach>
+        </if>
+
+    </select>
+    <select id="listCategoryByCids" resultType="java.lang.String">
+        SELECT category_id FROM cms_content
+        <if test="ids!=null and ids.size()>0">
+            WHERE id IN
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+        </if>
+    </select>
+    <select id="getCategoryId" resultType="java.lang.String">
+        SELECT category_id
+        FROM cms_content
+        WHERE id = #{id}
+    </select>
+    <select id="nextPrevious" resultType="java.util.Map">
+        SELECT content.id,content.title,content.sub_title AS subTitle ,content.author,content.clicks,content.copied,
+        content.cover,content.description,content.editor,content.create_time AS createTime,content.url,
+        attr.text,attr.`data`,
+        attr.origin,attr.origin_url AS originUrl , content.top_tag AS topTag,content.model_id AS modelId,
+        content.publish_date AS publishDate,content.path_rule AS pathRule,
+        content.isheadline,content.isrecomd,content.istop,
+        category.`id` AS categoryId,category.`code` AS categoryCode,category.path AS categoryPath,category.`name` AS
+        categoryName
+        FROM cms_content content
+        LEFT JOIN cms_tag tag ON FIND_IN_SET(tag.id,content.tag_ids)
+        LEFT JOIN cms_category category ON category.id = content.category_id
+        LEFT JOIN cms_content_attribute attr ON attr.content_id = content.id
+        WHERE content.status = '1'
+        <if test="categoryId!=null">
+            AND content.category_id = #{categoryId}
+        </if>
+        <choose>
+            <when test="next">
+                AND CAST(content.id AS signed) &gt; CAST(#{id} AS signed) ORDER BY CAST(content.id AS signed) ASC LIMIT
+                1
+            </when>
+            <otherwise>
+                AND CAST(content.id AS signed) &lt; CAST(#{id} AS signed) ORDER BY CAST(content.id AS signed) DESC LIMIT
+                1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="pageContent" resultType="java.util.Map">
+        SELECT content.id,content.title,content.sub_title AS
+        subTitle,content.copied,content.author,content.editor,content.create_time AS createTime,
+        content.description,content.cover ,content.sort,content.status,category.name AS categoryName,
+        content.category_id categoryId,content.url,
+        content.istop,content.isrecomd,content.isheadline,top_tag ,attr.`data`,attr.text,attr.origin,attr.origin_url AS
+        originUrl,
+        content.top_tag AS topTag
+        FROM cms_content content
+        INNER JOIN cms_category category ON content.category_id = category.id
+        LEFT JOIN cms_content_attribute attr ON attr.content_id = content.id
+        <where>
+            <if test="categoryId!=null">
+                (content.category_id = #{categoryId} OR content.p_category_id=#{categoryId})
+            </if>
+            AND content.status = 1 GROUP BY content.id
+        </where>
+    </select>
+    <select id="buildParams" resultType="java.util.Map">
+        SELECT id AS contentId ,category_id AS categoryId,model_id AS modelId FROM cms_content WHERE id IN
+        <if test="ids!=null and ids.size() > 0">
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+    <select id="pageAllContentForGen" resultType="java.util.Map">
+        SELECT content.id,
+               content.id           AS contentId,
+               content.site_id      AS siteId,
+               content.title,
+               content.sub_title    AS subTitle,
+               content.author,
+               content.clicks,
+               content.copied,
+               content.cover,
+               content.description,
+               content.editor,
+               content.create_time  AS createTime,
+               content.url,
+               attr.text,
+               attr.`data`,
+               attr.origin,
+               attr.origin_url      AS originUrl,
+               content.top_tag      AS topTag,
+               content.model_id     AS modelId,
+               content.publish_date AS publishDate,
+               content.path_rule    AS pathRule,
+               content.isheadline,
+               content.isrecomd,
+               content.istop,
+               category.`id`        AS categoryId,
+               category.`code`      AS categoryCode,
+               category.`code`      AS code,
+               category.path        AS categoryPath,
+               category.`name`      AS categoryName
+        FROM cms_content content
+                 LEFT JOIN cms_category category ON category.id = content.category_id
+                 LEFT JOIN cms_content_attribute attr ON attr.content_id = content.id
+        WHERE content.category_id IS NOT NULL
+    </select>
+    <select id="listByCode" resultType="java.util.Map">
+        SELECT content.id,content.title,content.sub_title AS
+        subTitle,content.copied,content.author,content.editor,content.create_time AS createTime,
+        content.description,content.cover ,content.sort,content.status,category.name AS categoryName,category.code AS
+        categoryCode,
+        content.category_id categoryId,content.url,category.path AS categoryPath,
+        content.istop,content.isrecomd,content.isheadline,attr.`data`,attr.text,attr.origin,attr.origin_url AS
+        originUrl,
+        content.top_tag AS topTag, content.publish_date AS publishDate
+        FROM cms_content content
+        INNER JOIN cms_category category ON content.category_id = category.id
+        LEFT JOIN cms_content_attribute attr ON attr.content_id = content.id
+        <where>
+            <if test="code!=null">
+                category.code = #{code}
+            </if>
+            <if test="categoryId!=null">
+                AND category.id = #{categoryId}
+            </if>
+            AND content.status = 1
+        </where>
+
+        <if test="ascFields.size() > 0 or descFields.size() > 0">
+            ORDER BY
+            <if test="descFields!=null and descFields.size() > 0">
+                <foreach collection="descFields" item="field" separator=",">content.${field}</foreach>
+                DESC
+            </if>
+
+            <if test="ascFields!=null and ascFields.size()>0">
+                <if test="descFields!=null and descFields.size()>0">
+                    ,
+                </if>
+                <foreach collection="ascFields" item="field" separator=",">content.${field}</foreach>
+                ASC
+            </if>
+        </if>
+
+        <if test="num!=null">
+            LIMIT 0, #{num}
+        </if>
+    </select>
+    <select id="getTopNews" resultType="java.util.Map">
+        SELECT content.id,content.title,content.sub_title AS subTitle,content.copied,content.author,content.editor,
+        content.create_time AS createTime,content.publish_date AS publishDate,content.description,content.cover
+        ,category.path AS categoryPath,
+        content.sort,content.status,category.name AS categoryName,category.code,category.code AS categoryCode,
+        content.category_id,
+        content.istop,content.isrecomd,content.isheadline,top_tag ,attr.`data`,attr.text,attr.origin,attr.origin_url AS
+        originUrl,content.url,
+        content.top_tag AS topTag
+        FROM cms_content content
+        INNER JOIN cms_category category ON content.category_id = category.id
+        LEFT JOIN cms_content_attribute attr ON attr.content_id = content.id
+        <where>
+            <if test="categoryId!=null">
+                (content.category_id = #{categoryId} OR content.p_category_id = #{categoryId})
+            </if>
+            <if test="codes!=null and codes.size() > 0">
+                AND category.code in
+                <foreach collection="codes" item="code" index="index" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>
+            </if>
+            <if test="field!=null and field!=''">
+                AND content.${field} = 1
+            </if>
+            AND content.status = 1
+        </where>
+        LIMIT #{num}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from cms_content
+    </select>
+    <select id="questionList" resultType="com.milelu.service.domain.Content">
+        <include refid="selectContentVo"/>
+        where title like CONCAT('%',#{keywords},'%')
+        LIMIT #{start},#{end}
+    </select>
+    <insert id="insertContent" parameterType="Content">
+        insert into cms_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="subTitle != null">sub_title,</if>
+            <if test="approveUserId != null">approve_user_id,</if>
+            <if test="approveUserName != null">approve_user_name,</if>
+            <if test="categoryId != null and categoryId != ''">category_id,</if>
+            <if test="pCategoryId != null">p_category_id,</if>
+            <if test="modelId != null and modelId != ''">model_id,</if>
+            <if test="copied != null">copied,</if>
+            <if test="author != null">author,</if>
+            <if test="editor != null">editor,</if>
+            <if test="istop != null">istop,</if>
+            <if test="isrecomd != null">isrecomd,</if>
+            <if test="isheadline != null">isheadline,</if>
+            <if test="onlyUrl != null">only_url,</if>
+            <if test="hasFiles != null">has_files,</if>
+            <if test="hasRelated != null">has_related,</if>
+            <if test="hasTags != null">has_tags,</if>
+            <if test="url != null">url,</if>
+            <if test="description != null">description,</if>
+            <if test="tagIds != null">tag_ids,</if>
+            <if test="topTag != null">top_tag,</if>
+            <if test="cover != null">cover,</if>
+            <if test="comments != null">comments,</if>
+            <if test="clicks != null">clicks,</if>
+            <if test="pathRule != null">path_rule,</if>
+            <if test="giveLikes != null">give_likes,</if>
+            <if test="publishDate != null">publish_date,</if>
+            <if test="publishUserId != null">publish_user_id,</if>
+            <if test="jobDate != null">job_date,</if>
+            <if test="approveDate != null">approve_date,</if>
+            <if test="sort != null">sort,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createId != null and createId != ''">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="modifiedName != null">modified_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="subTitle != null">#{subTitle},</if>
+            <if test="approveUserId != null">#{approveUserId},</if>
+            <if test="approveUserName != null">#{approveUserName},</if>
+            <if test="categoryId != null and categoryId != ''">#{categoryId},</if>
+            <if test="pCategoryId != null">#{pCategoryId},</if>
+            <if test="modelId != null and modelId != ''">#{modelId},</if>
+            <if test="copied != null">#{copied},</if>
+            <if test="author != null">#{author},</if>
+            <if test="editor != null">#{editor},</if>
+            <if test="istop != null">#{istop},</if>
+            <if test="isrecomd != null">#{isrecomd},</if>
+            <if test="isheadline != null">#{isheadline},</if>
+            <if test="onlyUrl != null">#{onlyUrl},</if>
+            <if test="hasFiles != null">#{hasFiles},</if>
+            <if test="hasRelated != null">#{hasRelated},</if>
+            <if test="hasTags != null">#{hasTags},</if>
+            <if test="url != null">#{url},</if>
+            <if test="description != null">#{description},</if>
+            <if test="tagIds != null">#{tagIds},</if>
+            <if test="topTag != null">#{topTag},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="comments != null">#{comments},</if>
+            <if test="clicks != null">#{clicks},</if>
+            <if test="pathRule != null">#{pathRule},</if>
+            <if test="giveLikes != null">#{giveLikes},</if>
+            <if test="publishDate != null">#{publishDate},</if>
+            <if test="publishUserId != null">#{publishUserId},</if>
+            <if test="jobDate != null">#{jobDate},</if>
+            <if test="approveDate != null">#{approveDate},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createId != null and createId != ''">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="modifiedName != null">#{modifiedName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateContent" parameterType="Content">
+        update cms_content
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="subTitle != null">sub_title = #{subTitle},</if>
+            <if test="approveUserId != null">approve_user_id = #{approveUserId},</if>
+            <if test="approveUserName != null">approve_user_name = #{approveUserName},</if>
+            <if test="categoryId != null and categoryId != ''">category_id = #{categoryId},</if>
+            <if test="pCategoryId != null">p_category_id = #{pCategoryId},</if>
+            <if test="modelId != null and modelId != ''">model_id = #{modelId},</if>
+            <if test="copied != null">copied = #{copied},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="editor != null">editor = #{editor},</if>
+            <if test="istop != null">istop = #{istop},</if>
+            <if test="isrecomd != null">isrecomd = #{isrecomd},</if>
+            <if test="isheadline != null">isheadline = #{isheadline},</if>
+            <if test="onlyUrl != null">only_url = #{onlyUrl},</if>
+            <if test="hasFiles != null">has_files = #{hasFiles},</if>
+            <if test="hasRelated != null">has_related = #{hasRelated},</if>
+            <if test="hasTags != null">has_tags = #{hasTags},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="tagIds != null">tag_ids = #{tagIds},</if>
+            <if test="topTag != null">top_tag = #{topTag},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="comments != null">comments = #{comments},</if>
+            <if test="clicks != null">clicks = #{clicks},</if>
+            <if test="pathRule != null">path_rule = #{pathRule},</if>
+            <if test="giveLikes != null">give_likes = #{giveLikes},</if>
+            <if test="publishDate != null">publish_date = #{publishDate},</if>
+            <if test="publishUserId != null">publish_user_id = #{publishUserId},</if>
+            <if test="jobDate != null">job_date = #{jobDate},</if>
+            <if test="approveDate != null">approve_date = #{approveDate},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="createId != null and createId != ''">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="modifiedName != null">modified_name = #{modifiedName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="publish">
+        <if test="ids!=null and ids.size()>0">
+            UPDATE cms_content SET status =#{status} ,publish_date = now()
+            <if test="byJob">
+                ,job_date = #{date}
+            </if>
+            WHERE id IN
+            <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </update>
+    <update id="jobPublish">
+        UPDATE cms_content SET job_date =#{date}
+        WHERE id IN
+        <foreach collection="contentIds" index="index" item="contentId" open="(" separator="," close=")">
+            #{contentId}
+        </foreach>
+    </update>
+    <update id="updateStatus">
+        UPDATE cms_content
+        SET status=#{status}
+        WHERE id = #{id}
+    </update>
+    <update id="top">
+        UPDATE cms_content
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="istop!=null">
+                istop =#{istop} ,
+            </if>
+            <if test="isrecomd!=null">
+                isrecomd =#{isrecomd},
+            </if>
+            <if test="isheadline!=null">
+                isheadline =#{isheadline},
+            </if>
+            <if test="sort!=null">
+                sort =#{sort},
+            </if>
+            <if test="topTag!=null">
+                top_tag =#{topTag},
+            </if>
+
+        </trim>
+
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <delete id="deleteContentById" parameterType="String">
+        delete
+        from cms_content
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteContentByIds" parameterType="String">
+        delete from cms_content where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
