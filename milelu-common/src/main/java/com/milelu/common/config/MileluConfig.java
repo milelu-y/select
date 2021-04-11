@@ -63,6 +63,8 @@ public class MileluConfig {
      */
     private static String profile;
 
+    private   String resourcePath;
+
     private  String sitePath;
 
     private String domain;

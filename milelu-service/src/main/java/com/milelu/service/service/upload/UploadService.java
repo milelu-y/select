@@ -1,6 +1,7 @@
 package com.milelu.service.service.upload;
 
 import com.milelu.common.core.domain.AjaxResult;
+import com.milelu.service.domain.SelectTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -14,6 +15,13 @@ public interface UploadService {
      * @return
      */
     AjaxResult uploadFile(MultipartFile file);
+
+    /**
+     * 上传文件
+     * @param files
+     * @return
+     */
+    AjaxResult uploadFiles(SelectTemplate selectTemplate,MultipartFile[] files);
 
     /**
      * 删除文件

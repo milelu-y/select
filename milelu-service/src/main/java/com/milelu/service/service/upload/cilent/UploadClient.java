@@ -36,6 +36,12 @@ public abstract class UploadClient {
     public abstract AjaxResult readyUpload(MultipartFile file);
 
     /**
+     * 上传多个文件
+     * @param multipartFiles
+     * @return
+     */
+    public abstract AjaxResult uploadFiles(MultipartFile[] multipartFiles);
+    /**
      * 文件上传中触发
      *
      * @param file

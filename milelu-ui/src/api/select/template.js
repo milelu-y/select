@@ -51,3 +51,12 @@ export function exportTemplate(query) {
     params: query
   })
 }
+
+// 上传文件
+export function uploadFiles(data) {
+  return request({
+    url: '/select/template/uploadFiles',
+    method: 'post',
+    data: data
+  })
+}

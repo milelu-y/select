@@ -463,3 +463,22 @@ button.el-button.el-button--default.el-button--mini.is-disabled {
   transition: opacity .3s, transform .3s, left .3s, right .3s, top 0.4s, bottom .3s, -webkit-transform .3s;
   overflow: hidden;
 }
+
+.el-card {
+  border-radius: 4px;
+  /* border: 1px solid #000000; */
+  background-color: #FFFFFF;
+  overflow: hidden;
+  color: #303133;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+.el-card {
+  border-radius: 4px;
+  border: 1px solid #ffffff;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  color: #303133;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}

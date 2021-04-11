@@ -50,6 +50,11 @@ public class LoaclCilent extends UploadClient {
         return AjaxResult.error("文件上传失败");
     }
 
+    @Override
+    public AjaxResult uploadFiles(MultipartFile[] multipartFiles) {
+        return null;
+    }
+
     /**
      * 文件上传中触发
      *

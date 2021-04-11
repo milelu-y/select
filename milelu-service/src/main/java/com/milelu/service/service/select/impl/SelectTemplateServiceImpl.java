@@ -1,12 +1,17 @@
 package com.milelu.service.service.select.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import com.milelu.common.config.MileluConfig;
+import com.milelu.common.core.domain.AjaxResult;
 import com.milelu.service.service.select.SelectTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.milelu.service.mapper.SelectTemplateMapper;
 import com.milelu.service.domain.SelectTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 选版模板Service业务层处理
@@ -19,6 +24,8 @@ public class SelectTemplateServiceImpl implements SelectTemplateService
 {
     @Autowired
     private SelectTemplateMapper selectTemplateMapper;
+    @Autowired
+    private MileluConfig mileluConfig;
 
     /**
      * 查询选版模板
@@ -51,11 +58,39 @@ public class SelectTemplateServiceImpl implements SelectTemplateService
      * @return 结果
      */
     @Override
-    public int insertSelectTemplate(SelectTemplate selectTemplate)
+    public void insertSelectTemplate(SelectTemplate selectTemplate, MultipartFile[] files)
     {
-        return selectTemplateMapper.insertSelectTemplate(selectTemplate);
+        if (files == null || files.length == 0) {
+            return;
+        }
+        String[] directory = files[0].getOriginalFilename().split("/");
+        String dir = directory[0];
+        for (MultipartFile file : files) {
+            String filePath = mileluConfig.getResourcePath() + "/" + file.getOriginalFilename().replace(dir, selectTemplate.getPath());
+            makeDir(filePath);
+            File dest = new File(filePath);
+            try {
+                file.transferTo(dest);
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        selectTemplateMapper.insertSelectTemplate(selectTemplate);
     }
-
+    /**
+     * 确保目录存在，不存在则创建
+     *
+     * @param filePath
+     */
+    private static void makeDir(String filePath) {
+        if (filePath.lastIndexOf('/') > 0) {
+            String dirPath = filePath.substring(0, filePath.lastIndexOf('/'));
+            File dir = new File(dirPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+        }
+    }
     /**
      * 修改选版模板
      *

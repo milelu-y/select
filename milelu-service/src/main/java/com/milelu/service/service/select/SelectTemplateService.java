@@ -1,7 +1,10 @@
 package com.milelu.service.service.select;
 
 import java.util.List;
+
+import com.milelu.common.core.domain.AjaxResult;
 import com.milelu.service.domain.SelectTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 选版模板Service接口
@@ -33,7 +36,7 @@ public interface SelectTemplateService
      * @param selectTemplate 选版模板
      * @return 结果
      */
-    public int insertSelectTemplate(SelectTemplate selectTemplate);
+    public void insertSelectTemplate(SelectTemplate selectTemplate, MultipartFile[] files);
 
     /**
      * 修改选版模板

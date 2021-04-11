@@ -22,7 +22,7 @@ milelu:
 
     # 文件路径 示例（ Windows配置D:/milelu/uploadPath，Linux配置 /home/milelu/uploadPath）
   profile: ${milelu.rootPath}uploadPath
-
+  resourcePath: ${milelu.rootPath}uploadPath/resource
   sitePath: ${milelu.rootPath}site/
 
   domain: www.xxx.com
